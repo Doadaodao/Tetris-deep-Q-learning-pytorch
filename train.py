@@ -12,7 +12,7 @@ import torch.nn as nn
 from tensorboardX import SummaryWriter
 
 from src.deep_q_network import DeepQNetwork
-from src.tetris import Tetris
+from src.tetris_5 import Tetris
 from collections import deque
 
 
