@@ -4,7 +4,7 @@
 import argparse
 import torch
 import cv2
-from src.tetris import Tetris
+from src.tetris_5 import Tetris
 
 
 def get_args():
@@ -15,7 +15,7 @@ def get_args():
     parser.add_argument("--height", type=int, default=20, help="The common height for all images")
     parser.add_argument("--block_size", type=int, default=30, help="Size of a block")
     parser.add_argument("--fps", type=int, default=300, help="frames per second")
-    parser.add_argument("--saved_path", type=str, default="trained_models")
+    parser.add_argument("--saved_path", type=str, default="trained_models_5")
     parser.add_argument("--output", type=str, default="output.mp4")
 
     args = parser.parse_args()
@@ -28,7 +28,7 @@ def test(opt):
     else:
         torch.manual_seed(123)
     if torch.cuda.is_available():
-        model = torch.load("{}/tetris_3000".format(opt.saved_path), weights_only=False)
+        model = torch.load("{}/tetris_10000".format(opt.saved_path), weights_only=False)
     else:
         model = torch.load("{}/tetris".format(opt.saved_path), map_location=lambda storage, loc: storage)
     model.eval()
