@@ -136,12 +136,12 @@ def train(opt):
 
         losses.append(loss.item())
 
-        if epoch % 100 == 0:
+        if epoch % 200 == 0:
             # Print average loss, score, tetrominoes, cleared lines
-            avg_loss = np.mean(losses[-100:])
-            avg_score = np.mean(scores[-100:])
-            avg_tetrominoes = np.mean(tetrominoes[-100:])
-            avg_cleared_lines = np.mean(cleared_lines[-100:])
+            avg_loss = np.mean(losses[-200:])
+            avg_score = np.mean(scores[-200:])
+            avg_tetrominoes = np.mean(tetrominoes[-200:])
+            avg_cleared_lines = np.mean(cleared_lines[-200:])
             print("Epoch: {}/{}, Loss: {:.4f}, Score: {:.2f}, Tetrominoes: {:.2f}, Cleared lines: {:.2f}".format(
                 epoch, opt.num_epochs, avg_loss, avg_score, avg_tetrominoes, avg_cleared_lines))
         # print("Epoch: {}/{}, Action: {}, Score: {}, Tetrominoes {}, Cleared lines: {}".format(
@@ -151,6 +151,7 @@ def train(opt):
         #     final_score,
         #     final_tetrominoes,
         #     final_cleared_lines))
+        writer.add_scalar('Train/Loss', loss.item(), epoch - 1)
         writer.add_scalar('Train/Score', final_score, epoch - 1)
         writer.add_scalar('Train/Tetrominoes', final_tetrominoes, epoch - 1)
         writer.add_scalar('Train/Cleared lines', final_cleared_lines, epoch - 1)
