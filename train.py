@@ -60,6 +60,10 @@ def train(opt):
 
     replay_memory = deque(maxlen=opt.replay_memory_size)
     epoch = 0
+    scores = []
+    tetrominoes = []
+    cleared_lines = []
+    losses = []
     while epoch < opt.num_epochs:
         next_steps = env.get_next_states()
         # Exploration or exploitation
@@ -101,6 +105,9 @@ def train(opt):
         if len(replay_memory) < opt.replay_memory_size / 10:
             continue
         epoch += 1
+        scores.append(final_score)
+        tetrominoes.append(final_tetrominoes)
+        cleared_lines.append(final_cleared_lines)
         batch = sample(replay_memory, min(len(replay_memory), opt.batch_size))
         state_batch, reward_batch, next_state_batch, done_batch = zip(*batch)
         state_batch = torch.stack(tuple(state for state in state_batch))
@@ -127,13 +134,23 @@ def train(opt):
         loss.backward()
         optimizer.step()
 
-        print("Epoch: {}/{}, Action: {}, Score: {}, Tetrominoes {}, Cleared lines: {}".format(
-            epoch,
-            opt.num_epochs,
-            action,
-            final_score,
-            final_tetrominoes,
-            final_cleared_lines))
+        losses.append(loss.item())
+
+        if epoch % 100 == 0:
+            # Print average loss, score, tetrominoes, cleared lines
+            avg_loss = np.mean(losses[-100:])
+            avg_score = np.mean(scores[-100:])
+            avg_tetrominoes = np.mean(tetrominoes[-100:])
+            avg_cleared_lines = np.mean(cleared_lines[-100:])
+            print("Epoch: {}/{}, Loss: {:.4f}, Score: {:.2f}, Tetrominoes: {:.2f}, Cleared lines: {:.2f}".format(
+                epoch, opt.num_epochs, avg_loss, avg_score, avg_tetrominoes, avg_cleared_lines))
+        # print("Epoch: {}/{}, Action: {}, Score: {}, Tetrominoes {}, Cleared lines: {}".format(
+        #     epoch,
+        #     opt.num_epochs,
+        #     action,
+        #     final_score,
+        #     final_tetrominoes,
+        #     final_cleared_lines))
         writer.add_scalar('Train/Score', final_score, epoch - 1)
         writer.add_scalar('Train/Tetrominoes', final_tetrominoes, epoch - 1)
         writer.add_scalar('Train/Cleared lines', final_cleared_lines, epoch - 1)
