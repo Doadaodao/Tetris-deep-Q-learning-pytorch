@@ -28,7 +28,7 @@ def test(opt):
     else:
         torch.manual_seed(123)
     if torch.cuda.is_available():
-        model = torch.load("{}/tetris_10000".format(opt.saved_path), weights_only=False)
+        model = torch.load("{}/tetris_300000".format(opt.saved_path), weights_only=False)
     else:
         model = torch.load("{}/tetris".format(opt.saved_path), map_location=lambda storage, loc: storage)
     model.eval()

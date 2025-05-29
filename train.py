@@ -23,17 +23,17 @@ def get_args():
     parser.add_argument("--height", type=int, default=20, help="The common height for all images")
     parser.add_argument("--block_size", type=int, default=30, help="Size of a block")
     parser.add_argument("--batch_size", type=int, default=512, help="The number of images per batch")
-    parser.add_argument("--lr", type=float, default=5e-4)
+    parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--gamma", type=float, default=0.99)
     parser.add_argument("--initial_epsilon", type=float, default=1)
-    parser.add_argument("--final_epsilon", type=float, default=1e-3)
-    parser.add_argument("--num_decay_epochs", type=float, default=50000)
-    parser.add_argument("--num_epochs", type=int, default=100000)
-    parser.add_argument("--save_interval", type=int, default=1000)
+    parser.add_argument("--final_epsilon", type=float, default=5e-4)
+    parser.add_argument("--num_decay_epochs", type=float, default=200000)
+    parser.add_argument("--num_epochs", type=int, default=300000)
+    parser.add_argument("--save_interval", type=int, default=20000)
     parser.add_argument("--replay_memory_size", type=int, default=30000,
                         help="Number of epoches between testing phases")
     parser.add_argument("--log_path", type=str, default="tensorboard_5")
-    parser.add_argument("--saved_path", type=str, default="trained_models_5")
+    parser.add_argument("--saved_path", type=str, default="trained_models_300000_lr1e-4")
 
     args = parser.parse_args()
     return args
